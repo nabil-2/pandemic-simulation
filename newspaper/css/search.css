@@ -1,0 +1,81 @@
+
+  .middle{
+    margin: 0;
+    padding: 0;
+    height: 0;
+    margin-right: -25px;
+    transform: translate(-50%,-50%);
+  }
+  .input{
+    width: 30px;
+    height: 30px;
+    background: none;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    box-sizing: border-box;
+    outline: none;
+    transition: width 0.4s ease-in-out,
+                border-radius 0.8s ease-in-out,
+                padding 0.2s;
+    transition-delay: 0.4s;
+    color: white;
+    font-size: 20px;
+  }
+  .inclicked{
+    width: 250px;
+    border-radius: 0;
+    padding: 0 15px;
+    padding-right: 25px;
+  }
+  @media (max-width: 400px) {
+    .inclicked {
+      width: 240px;
+    }
+  }
+  @media (max-width: 373px) {
+    .inclicked {
+      width: 200px;
+    }
+  }
+  .btn{
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    top:0;
+    right: 0;
+    box-sizing: border-box;
+    background: none;
+    border: none;
+    outline: none;
+    cursor: pointer;
+  }
+  .btn::before{
+    content: "";
+    width: 2px;
+    height: 20px;
+    background: white;
+    position: absolute;
+    transform: rotate(-45deg);
+    bottom: -5px;
+    right: -6px;
+    transition: 0.3s;
+  }
+  .close::before,.close::after{
+    content: "";
+    width: 2px;
+    height: 20px;
+    background: white;
+    position: absolute;
+    bottom: 15px;
+    right: 13px;
+  }
+  .close::before{
+      transform: rotate(-45deg);
+  }
+  .close::after{
+      transform: rotate(45deg);
+  }
+  .close,
+  .inclicked {
+    /* margin-right: -85px; */
+  }

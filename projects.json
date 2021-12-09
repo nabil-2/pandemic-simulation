@@ -1,0 +1,38 @@
+[
+    {
+        "name": "Computer Vision Library",
+        "img": "computer_vision.png",
+        "url": "computer-vision",
+        "description": "A library for training and testing a user-definded Convolutional Neuronal Network model, capable of all common techniques for supervised image classification and image preprocessing."
+    },
+    {
+        "name": "AI for Anomaly Detection",
+        "img": "ai_anomaly_detection.png",
+        "url": "anomaly-detection",
+        "description": "An AI for anomaly detection in particle physics to recognize possible beyond Standard Model events when colliding hadrons (currently working on)."
+    },
+    {
+        "name": "Research",
+        "img": "research.png",
+        "url": "research",
+        "description": "Developing a new type of a storage space efficient neural network by decreasing unnecessary performance by calculating weights at runtime using a “weight function” instead of saving them. Achieving about 90% less storage and 10% higher error (depending on model)."
+    },
+    {
+        "name": "Simulation",
+        "img": "simulation.png",
+        "url": "simulation",
+        "description": "A complex reconstruction of a pandemic as Web-App using real-world actions measured by comparing plots to mathematical models."
+    },
+    {
+        "name": "Android App",
+        "img": "android.jpg",
+        "url": "android-app",
+        "description": "A calculator for various linear- and vector algebra operations, e.g. calculating a linear combination in n-dimensional space, vector operations, calculating the determinant, etc."
+    },
+    {
+        "name": "Web Development",
+        "img": "web_dev.png",
+        "url": "http://salama-art.de/en",
+        "description": "Developing a <a href='http://salama-art.de/en'>personal website</a> (see footer) or a website for a <a href='./newspaper'>school newspaper</a>."
+    }
+]

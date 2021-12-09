@@ -1,0 +1,96 @@
+.login_form {
+    transition: .5s all ease-in-out;
+    position: absolute;
+    height: 40%;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, 0);
+    width: 30%;
+    background-color: aliceblue;
+    padding: 15px;
+    border-radius: 10px;
+    z-index: 100;
+}
+
+.background {
+    display: none;
+    margin-top: -11.4em;
+    z-index: 99;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    background-color: rgba(51, 51, 51, 0.8);
+}
+
+div.login_form form {
+    margin-top: 2em;
+    padding: 20px;
+}
+
+.login_form > #close {
+    margin-left: 1em;
+    cursor: pointer;
+    position: relative;
+    float: left;
+    height: 45px;
+    width: auto;
+    z-index: 111;
+}
+
+.login_form > #close > div {
+    display: block;
+    width: 50px;
+    height: 0;
+    margin-top: 10px;
+    border: 3px solid cornflowerblue;
+    border-radius: 3px;
+    background-color: cornflowerblue;
+}
+
+.login_form > #close div:last-child {
+    transform: translateY(-8px) rotateZ(-45deg);
+}
+
+.login_form > #close div:first-child {
+    transform: translateY(8px) rotateZ(45deg);
+}
+
+.login_form > form > * {
+    width: 100%;
+    display: inline-block;
+    box-sizing: border-box;
+    margin-bottom: 25px;
+}
+
+.login_form > form > input,
+.login_form > form > input:focus {
+    padding: 12px;
+    border-radius: 100px;
+    border: 2px solid cornflowerblue;
+}
+
+.login_form > form > input:focus {
+    outline: none;
+    background-color: rgba(9, 144, 255, 0.171);
+}
+
+.login_form  > form button {
+    padding: 15px;
+    font-size: 1.3em;
+    color: white;
+    background-color: cornflowerblue;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+}
+
+.login_form  > form button:hover {
+    background-color: #202f72;
+}
+
+@media only screen and (max-width: 1000px) {
+    .login_form {
+        transition: .5s all ease-in-out;
+        width: 85%;
+    }
+}

@@ -1,0 +1,76 @@
+<html lang="de" xml:lang="de" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta name="description" content="Das Archiv der Schülerzeitung Glocke des Friedrich-Ebert-Gymnasiums">
+    <meta name="keywords" content="Glocke, Archiv, Schülerzeitung, Friedrich-Ebert-Gymnasium">
+    <meta name="author" content="Nabil Salama, Agit Akgümüs">
+    <meta name="date" content="2019-10-22">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="./lib/jQuery UI/jquery-ui.min.css" />
+    <script type="text/javascript" src="./lib/jQuery UI/jquery-ui.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="./css/footer.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="./css/style.css">
+    <link rel="stylesheet" type="text/css" href="./css/header.css" />
+    <script type="text/javascript" src="./js/style.js"></script>
+    <script type="text/javascript" src="./js/login.js"></script>
+    <link rel="shortcut icon" type="image/x-icon" href="./images/glocke_logo1.ico" />
+    <link rel="stylesheet" type="text/css" href="./css/login.css">
+    <link rel="stylesheet" type="text/css" href="./css/search.css">
+    <link rel="stylesheet" type="text/css" href="./css/archiv.css">
+    <title>Glocke | Archiv</title>
+    <script type="text/javascript" src="./js/allArticles.js"></script>
+    <script type="text/javascript" src="./js/main.js"></script>
+    <script type="text/javascript" src="./js/search.js"></script>
+    <script type="text/javascript" src="./js/archiv.js"></script>
+    <script type="text/javascript" src="./js/author.js"></script>
+    <script>
+        if (!window.jQuery) {
+            document.write("<script type='text/javascript' src='./lib/jQuery.js'><\/script>");
+            document.write("<script type='text/javascript' src='./lib/jQuery.flip.js'><\/script>")
+        }
+    </script>
+    <script>
+        $(document).ready(() => {
+            initialising.init("Glocke - Startseite", false/* Handlebars-variable für login */, "Agit"/* {{user.name}} */);
+            archiv.init();
+        });
+    </script>
+</head>
+
+<body>
+    <div class="loadHeader"></div>
+    <div class="wrapper">
+        <h1>Archiv der Schülerzeitung Glocke</h1>
+        <div class="pages">
+            <div class="sortBy">
+                sortieren nach Erscheinungsdatum
+                <select>
+                    <option>absteigend</option>
+                    <option>aufsteigend</option>
+                </select>
+            </div>
+            <hr>
+            <div class="app">
+                Artikel pro Seite:
+                <select>
+                    <option>10</option>
+                    <option>20</option>
+                    <option>30</option>
+                    <option>40</option>
+                    <option>50</option>
+                </select>
+            </div>
+            <hr>
+            <div class="pageNo">
+                Seite: <select></select>
+            </div>
+        </div>
+        <div class="articles"></div>
+    </div>
+    <div class="loadFooter"></footer>
+    </div>
+</body>
+
+</html>
