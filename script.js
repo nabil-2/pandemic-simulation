@@ -1,7 +1,7 @@
 const getProjects = ()=> {
     return `[
         {
-            "name": "Computer Vision Library",
+            "name": "Computer Vision Library<br>& Image Recognition",
             "img": "computer_vision.png",
             "url": "computer-vision",
             "description": "A library for training and testing a user-definded Convolutional Neuronal Network model, capable of all common techniques for supervised image classification and image preprocessing."
@@ -19,7 +19,7 @@ const getProjects = ()=> {
             "description": "Developing a new type of a storage space efficient neural network by decreasing unnecessary performance by calculating weights at runtime using a “weight function” instead of saving them. Achieving about 90% less storage and 10% higher error (depending on model)."
         },
         {
-            "name": "Simulation",
+            "name": "Simulation of a Pandemic",
             "img": "simulation.png",
             "url": "simulation",
             "description": "A complex reconstruction of a pandemic as Web-App using real-world actions measured by comparing plots to mathematical models."
@@ -48,19 +48,18 @@ const getProjects = ()=> {
            }
         });
         request.send();
-    });
-    
+    });    
 };
 
 const init = async ()=> {
     const projects = JSON.parse(await getProjects());
     for(const project of projects) {
-        $('body').append(`<div class="project">
+        $('body #tiles').append(`<div class="project">
             <h3>${project.name}</h3>
             <p>${project.description}</p>
         </div>`);        
         let height = $('div.project:last-child p').height();
-        $('body > div.project:last-child').css({
+        $('#tiles div.project:last-child').css({
             'background-image': `url('./img/${project.img}')`
         }).on('click', x=> {
             $('body').append(`<a id="redirect" href="${project.url}" />`);

@@ -1,6 +1,6 @@
 [
     {
-        "name": "Computer Vision Library",
+        "name": "Computer Vision Library<br>& Image Recognition",
         "img": "computer_vision.png",
         "url": "computer-vision",
         "description": "A library for training and testing a user-definded Convolutional Neuronal Network model, capable of all common techniques for supervised image classification and image preprocessing."
@@ -18,7 +18,7 @@
         "description": "Developing a new type of a storage space efficient neural network by decreasing unnecessary performance by calculating weights at runtime using a “weight function” instead of saving them. Achieving about 90% less storage and 10% higher error (depending on model)."
     },
     {
-        "name": "Simulation",
+        "name": "Simulation of a Pandemic",
         "img": "simulation.png",
         "url": "simulation",
         "description": "A complex reconstruction of a pandemic as Web-App using real-world actions measured by comparing plots to mathematical models."
