@@ -19,10 +19,15 @@ body {
 }
 
 #sections > div {
-    border: 1px solid white;
+    border: 2px solid white;
     border-radius: 7px;
     margin: 15px;
     display: flex;
+}
+
+#sections a {
+    color: white;
+    text-decoration: underline;
 }
 
 #sections > div div:first-child {
