@@ -105,4 +105,7 @@ const init = async ()=> {
             });
         });
     }
+    if(screen.width <= 800) {
+        alert("This website is not optimized for mobile viewports, please use a desktop device.");
+    }
 };

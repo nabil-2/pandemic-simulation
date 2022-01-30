@@ -26,9 +26,12 @@ const init = () => {
         });
     }
     $('#sections').append(`
-            <div class='demo'>
-                <h3>Demonstration</h3>
-                <img src='./img/demo.png' />
-            </div>
-        `)
+        <div class='demo'>
+            <h3>Demonstration</h3>
+            <img src='./img/demo.png' />
+        </div>
+    `);
+    if(screen.width <= 800) {
+        alert("This website is not optimized for mobile viewports, please use a desktop device.");
+    }
 }
