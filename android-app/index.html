@@ -1,14 +1,31 @@
 <html>
     <head>
+        <meta charset="utf-8">
         <title>Android App</title>
-        <style>
-            h2 {
-                text-align: center;
-                font-family: sans-serif;
-            }
-        </style>
+        <link rel="stylesheet" type="text/css" href="./style.css" />
+        <script src="./jquery.js"></script>
+        <link rel="shortcut icon" type="image/x-icon" href="./img/icon.ico">
+        <script>
+            $(x=> {
+                const img = ['form_transformator.jpg', 'line_line.jpg', 'linear_combination.jpg', 'matrix.jpg', 'menu.jpg'];
+                for(im of img) {
+                    $('#sections').append(`
+                        <a href='./img/${im}'>
+                            <img src='./img/${im}' />
+                        </a>
+                    `);
+                }
+                if(screen.width <= 800) {
+                    alert("This website is not optimized for mobile viewports, please use a desktop device.");
+                }
+            });
+        </script>
     </head>
     <body>
-        <h2>Comming Soon!</h2>
+        <h1 class="title">Mathematical Android-App in Java</h1>
+        <h2 class="title_sub">by Nabil Salama</h2>
+        <p class="doc"><a href="./vektorrechner.apk"><span>download apk</span></a></p>
+        <div id="sections">
+        </div>
     </body>
 </html>

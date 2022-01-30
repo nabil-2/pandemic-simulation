@@ -23,10 +23,13 @@ const init = () => {
         });
     }
     $('#sections').append(`
-            <div class='demo'>
-                <h3>Performance</h3>
-                <p>The left plot shows the training performance of a neural network with common Dense Layers learning to classify handwritten digits using the MNIST-Dataset with a Batch-Size of 256. Compared to the right graph of a Multidense-Layer network, that learns to solve the same problem, it outperforms the other network regarding convergence and error rate. But considering, that the Multidense Network uses less than 5% of the number of parameters the normal network uses, it is still a solid performance. The noise in the right graph is only due to a sprained axis and a smaller batch size of only 64 images.</p>
-                <img src='./img/comparison.png' />
-            </div>
-        `)
+        <div class='demo'>
+            <h3>Performance</h3>
+            <p>The left plot shows the training performance of a neural network with common Dense Layers learning to classify handwritten digits using the MNIST-Dataset with a Batch-Size of 256. Compared to the right graph of a Multidense-Layer network, that learns to solve the same problem, it outperforms the other network regarding convergence and error rate. But considering, that the Multidense Network uses less than 5% of the number of parameters the normal network uses, it is still a solid performance. The noise in the right graph is only due to a sprained axis and a smaller batch size of only 64 images.</p>
+            <img src='./img/comparison.png' />
+        </div>
+    `)
+    if(screen.width <= 1100) {
+        alert("This website is not optimized for mobile viewports, please use a desktop device.");
+    }
 }
