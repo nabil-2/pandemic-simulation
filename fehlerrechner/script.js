@@ -84,10 +84,15 @@ class Table {
     }
 
     setVal(id, row, val, type) {
+        if(!val && val != 0) {
+            val = null;
+        }
         if(this.data[type].hasOwnProperty(id)) {
             this.data[type][id][row] = val;
         }
         if(type == k.vals) this.updateData();
+        let col = this.$table.find('input.'+ id).parent('th').prevAll().length;
+        if(val || val == 0) this.$table.find(`tbody tr:nth-child(${row+1}) td:nth-child(${col+1}) input`).attr('value', val.toFixed(4));
     }
 
     setSysErr(id, val) {
@@ -96,7 +101,8 @@ class Table {
             this.data[k.sysErr][id] = val;
         }
         this.updateData();
-
+        let col = this.$table.find('input.'+ id).parent('th').prevAll().length;
+        this.$table.find(`tfoot tr td:nth-child(${col+1}) input`).attr('value', val);
     }
 
     deleteVal(id, row) {
@@ -179,8 +185,8 @@ class Table {
             b /= this.data[k.sum]['L2'] - n*Math.pow(this.data[k.mean][this.x], 2);
             let a = this.data[k.mean][this.y] - b*this.data[k.mean][this.x];
             this.n = n;
-            this.a = a.toFixed(4);
-            this.b = b.toFixed(4);
+            this.a = a.toFixed(5);
+            this.b = b.toFixed(5);
             let sa, sb, sy;
             if(this.data[k.calcs].hasOwnProperty('d2') && this.data[k.calcs].hasOwnProperty('L3')) {
                 sb = this.data[k.sum]['d2'];
@@ -190,11 +196,11 @@ class Table {
                 sb = Math.sqrt(sb);
                 sa = Math.sqrt(sa);
                 sy = Math.sqrt(this.data[k.sum]['d2']/(n-2));
-                this.$table.find('div#lin-reg span.a').text(a.toFixed(4));
-                this.$table.find('div#lin-reg span.b').text(b.toFixed(4));
-                this.$table.find('div#lin-reg span.sa').text(sa.toFixed(4));
-                this.$table.find('div#lin-reg span.sb').text(sb.toFixed(4));
-                this.$table.find('div#lin-reg span.sy').text(sy.toFixed(4));
+                this.$table.find('div#lin-reg span.a').text(a.toFixed(5));
+                this.$table.find('div#lin-reg span.b').text(b.toFixed(5));
+                this.$table.find('div#lin-reg span.sa').text(sa.toFixed(5));
+                this.$table.find('div#lin-reg span.sb').text(sb.toFixed(5));
+                this.$table.find('div#lin-reg span.sy').text(sy.toFixed(5));
             }
         }
         if(!notInitialCall) {
@@ -340,25 +346,53 @@ class Table {
                     let val = this.data[k.calcs][key][i];
                     if(!val && val != 0) return;
                     $(td).find('input').val(val.toFixed(4));
+                    this.$table.find(`tbody tr:nth-child(${i+1}) td:nth-child(${j+1}) input`).attr('value', val.toFixed(4));
                 });
             });
         }
         style();
     }
 
+    getList(id) {
+        let type = k.vals;
+        if(!this.data[type].hasOwnProperty(id)) type = k.calcs;
+        let str = "[";
+        for(let val of this.data[type][id]) {
+            str += val + ","
+        }
+        str = str.substring(0, str.length-1);
+        str += "]";
+        return str;
+    }
+
     setEventListener() {
         this.$table.find('thead i.fa-files-o').on('click', (e)=> {
             let ix = $(e.target).parent('th').prevAll().length;
             let id = this.idFromIx(ix);
-            let type = k.vals;
-            if(!this.data[type].hasOwnProperty(id)) type = k.calcs;
-            let str = "[";
-            for(let val of this.data[type][id]) {
-                str += val + ","
-            }
-            str = str.substring(0, str.length-1);
-            str += "]";
+            let str = this.getList(id);
             navigator.clipboard.writeText(str);
+        });
+        this.$table.find('table input[type=number]').off('keydown').each((_, el)=> {
+            $(el).on('keydown', e=> {
+                if([38, 40].indexOf(e.which) == -1) return;
+                e.preventDefault();
+                let $td = $(e.target).parent('td');
+                let row = $td.parent('tr').prevAll().length+1;
+                let col = $td.prevAll().length+1;
+                let ymin = 1,
+                    ymax = this.$table.find('tbody tr').length;
+                switch(e.which) {
+                    case 38: //top
+                        if(--row < ymin) return;
+                        break;
+                    case 40: //bottom
+                        if(++row > ymax) return;
+                        break;
+                    default:
+                        break;
+                }
+                this.$table.find(`tbody tr:nth-child(${row}) td:nth-child(${col}) input`).get(0).focus();
+            });
         });
         this.$table.find('table input').off('change').each((_, el)=> {
             let $parent = $(el).parent('td');
@@ -369,8 +403,8 @@ class Table {
                     this.setSysErr(id, parseFloat($(e.target).val()));
                 });
             } else if($parent[0]) { //tbody
-                let row = parseInt($parent.siblings('td:first').text()) - 1;
                 $(el).change((event)=> {
+                    let row = $(event.target).parent('td').parent('tr').prevAll().length;
                     let ix = $parent.prevAll().length;
                     let id = this.idFromIx(ix);
                     this.setVal(id, row, parseFloat($(event.target).val()), k.vals);
@@ -413,6 +447,7 @@ class Table {
                         setInput(false);                        
                         this.calculate(calc, id);
                     }
+                    $input.attr('value', $input.val())
                     this.updateData();
                 });
             }
@@ -425,6 +460,13 @@ class Table {
             this.$table.find('tbody tr td:first-child').each((i, el)=> {
                 $(el).text((i+1).toString());
             });
+        });
+        this.$table.find('thead th i.fa-trash-o').unbind().bind('click', e=> {
+            let ix = $(e.target).parent('th').prevAll().length;
+            let id = this.idFromIx(ix);
+            this.dropColumn(id);
+            let filter = `nth-child(${ix+1})`;
+            $(`tr th:${filter}, tr td:${filter}`).remove();
         });
     }
 
@@ -440,12 +482,43 @@ class Table {
             this.createColumn(id, k.vals);
             this.setEventListener();
         });
-        this.$table.find('tfoot i.fa-plus').on('click', ()=> {
+        this.$table.find('tfoot i.fa-plus, div.addRow p i').on('click', ()=> {
             this.createRow();
             this.setEventListener();
         });
         this.$table.find('p span i.fa-plus').on('click', ()=> {
             createTable();
+        });
+        this.$table.find('p span i.fa-file-code-o').on('click', ()=> {
+            let x_list = this.getList(this.x);
+            let y_list = this.getList(this.y);
+            let pyCode = `#!/usr/bin/env python3    
+import matplotlib.pyplot as plt
+import numpy as np
+
+def linReg(x):
+    a = ${this.a}
+    b = ${this.b}
+    return a+b*x
+
+x_list = ${x_list}
+y_list = ${y_list}
+minVal = min(x_list)
+maxVal = max(x_list)
+
+fig, ax = plt.subplots()
+ax.scatter(x_list, y_list, label='Messpunkte', s=20)
+
+points = np.linspace(minVal, maxVal+2, 500)
+reg = linReg(points)
+ax.plot(points, reg, c='r', label='Regressionsgerade')  
+
+ax.legend()
+plt.xlim(minVal, maxVal + 2)
+plt.xlabel('${this.x}')
+plt.ylabel('${this.y}')
+plt.savefig('graph.pdf')`;
+            navigator.clipboard.writeText(pyCode);
         });
         this.$table.find('p input.tID').change((e)=> {
             this.setID($(e.target).val());
@@ -456,18 +529,25 @@ class Table {
                 close = 'fa-eye-slash';
             if($el.hasClass(close)) {
                 $(e.target).removeClass(close).addClass(open);
-                this.$table.find('table i.fa').css({
+                this.$table.find('table i.fa, .addRow i.fa').css({
                     visibility: 'hidden'
                 });
             } else if($el.hasClass(open)) {
                 $(e.target).removeClass(open).addClass(close);
-                this.$table.find('table i.fa').css({
+                this.$table.find('table i.fa, .addRow i.fa').css({
                     visibility: 'visible'
                 });
             }
         });
         this.$table.find('span.newT i.fa-trash-o').on('click', ()=> {
             deleteTable(this.id);
+        });
+        this.$table.find('span.newT i.fa-print').on('click', ()=> {
+            let url = window.location.href.split('/');
+            url.splice(url.length-1, 1);
+            let target = url.join('/') + '/print.html?'
+            target += encodeURI(this.$table.find('table').html());
+            window.open(target, '_blank').focus();
         });
         this.$table.find('div#lin-reg').toggle();
         this.$table.find('span.newT i.fa-line-chart').on('click', ()=> {
@@ -494,7 +574,7 @@ class Table {
                         calc = `d2=(${y}-(${this.b})*${x}-(${this.a}))**2`;
                         break;
                     case 3:
-                        calc = `L3=(${x}-(${this.data[k.mean][x].toFixed(4)}))**2`
+                        calc = `L3=(${x}-(${this.data[k.mean][x].toFixed(5)}))**2`
                         break;
                     default:
                         break;
@@ -598,6 +678,8 @@ function createTable() {
         <span class='newT'>
             <i class="fa fa-plus" aria-hidden="true"></i>
             <i class="fa fa-trash-o" aria-hidden="true"></i>
+            <i class="fa fa-file-code-o" aria-hidden="true"></i>
+            <i class="fa fa-print" aria-hidden="true"></i>
             <i class="fa fa-line-chart" aria-hidden="true"></i>
             <i class="fa fa-eye-slash" aria-hidden="true"></i>
         </span>
@@ -616,6 +698,9 @@ function createTable() {
             <li>sb=<span class='sb'></span></li>
             <li>sy=<span class='sy'></span></li>
         </ul></p>
+    </div>
+    <div class='addRow'>
+        <p><i class="fa fa-plus" aria-hidden="true"></i></p>
     </div>
     <table>
         <thead>
@@ -654,7 +739,6 @@ function createTable() {
     let n=8;
     $('div#main').append(tableTemplate);
     tables[tID] = new Table($(`.${tID}`), tID, n, 'x1', 'x2');
-    console.log(tables[tID]);
     style();
 }
 

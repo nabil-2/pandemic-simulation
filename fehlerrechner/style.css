@@ -98,3 +98,26 @@ div#lin-reg ul li {
 table thead i.fa-files-o {
     margin-left: 5px;
 }
+
+div.addRow {
+    width: 80%;
+}
+
+div.addRow p {
+    margin: 0;
+    padding-left: 2px;
+}
+
+div.addRow p i:hover {
+    cursor: pointer;
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
