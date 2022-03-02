@@ -175,7 +175,7 @@ class Table {
                 let sdevM = sdev/Math.sqrt(n);
                 this.data[k.sdevM][i] = sdevM;
                 let sysErr = this.data[k.sysErr][i];
-                let err = Math.sqrt(sysErr**2 + sdev**2);
+                let err = Math.sqrt(sysErr**2 + sdevM**2);
                 this.data[k.error][i] = err;
             }
         }
@@ -504,17 +504,18 @@ def linReg(x):
 x_list = ${x_list}
 y_list = ${y_list}
 minVal = min(x_list)
-maxVal = max(x_list)
+maxVal = max(x_list) + 2
 
 fig, ax = plt.subplots()
 ax.scatter(x_list, y_list, label='Messpunkte', s=20)
 
-points = np.linspace(minVal, maxVal+2, 500)
+points = np.linspace(minVal, maxVal, 500)
 reg = linReg(points)
 ax.plot(points, reg, c='r', label='Regressionsgerade')  
 
 ax.legend()
-plt.xlim(minVal, maxVal + 2)
+plt.grid()
+plt.xlim(minVal, maxVal)
 plt.xlabel('${this.x}')
 plt.ylabel('${this.y}')
 plt.savefig('graph.pdf')`;
@@ -585,10 +586,8 @@ plt.savefig('graph.pdf')`;
     }
 
     translateCalc(calc, i) {
-        const tmp = this.data[k.vals];
-        for(let key in this.data[k.calcs]) {
-            tmp[key] = this.data[k.calcs][key];
-        }
+        const tmp = {};
+        Object.assign(tmp, this.data[k.vals], this.data[k.calcs]);
         let val = undefined;
         let expressions = [];
         let calcLoc = calc;
@@ -694,9 +693,9 @@ function createTable() {
         <p><ul style="display: none">
             <li>a=<span class='a'></span></li>
             <li>b=<span class='b'></span></li>
-            <li>sa=<span class='sa'></span></li>
-            <li>sb=<span class='sb'></span></li>
-            <li>sy=<span class='sy'></span></li>
+            <li>s<sub>a</sub>=<span class='sa'></span></li>
+            <li>s<sub>b</sub>=<span class='sb'></span></li>
+            <li>s<sub>y</sub>=<span class='sy'></span></li>
         </ul></p>
     </div>
     <div class='addRow'>
@@ -713,7 +712,7 @@ function createTable() {
         </tbody>
         <tfoot>
             <tr>
-                <td>systematischer Fehler:</td>
+                <td>systematischer Fehler</td>
             </tr>
             <tr>
                 <td>Summe</td>

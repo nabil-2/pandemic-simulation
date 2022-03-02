@@ -14,3 +14,16 @@ table {
 tfoot tr:not(:first-child) td:hover {
     cursor: pointer;
 }
+
+tfoot tr td:first-child {
+    font-size: .8em !important;
+}
+
+thead input {
+    width: 100% !important;
+    /* font-size: .8em !important;   */
+}
+
+thead th:first-child {
+    /* font-size: .8em !important; */
+}
