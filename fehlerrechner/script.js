@@ -225,7 +225,10 @@ class Table {
                     let search = `${keyT}.${keyData}`;
                     if(calc.includes(search)) {
                         variables.push(search);
-                        sdevM[search] = tables[keyT].data[k.sdevM][keyData];
+                        let err = tables[keyT].data[k.error][keyData];
+                        if(!err && err != 0) err = tables[keyT].data[k.sysErr][keyData];
+                        if(!err && err != 0) return;
+                        sdevM[search] = err;
                     }
                 }
             }
@@ -237,7 +240,10 @@ class Table {
                     let ix = calc.indexOf(key, i);
                     if(calc[ix-1] != "." || !calc[ix-1]) {
                         variables.push(key);
-                        sdevM[key] = this.data[k.sdevM][key];
+                        let err = this.data[k.error][key];
+                        if(!err && err != 0) err = this.data[k.sysErr][key];
+                        if(!err && err != 0) return;
+                        sdevM[key] = err;
                     }
                     i = ix + 1;
                 }
@@ -504,7 +510,7 @@ def linReg(x):
 x_list = ${x_list}
 y_list = ${y_list}
 minVal = min(x_list)
-maxVal = max(x_list) + 2
+maxVal = max(x_list)
 
 fig, ax = plt.subplots()
 ax.scatter(x_list, y_list, label='Messpunkte', s=20)
@@ -514,6 +520,7 @@ reg = linReg(points)
 ax.plot(points, reg, c='r', label='Regressionsgerade')  
 
 ax.legend()
+ax.set_axisbelow(True)
 plt.grid()
 plt.xlim(minVal, maxVal)
 plt.xlabel('${this.x}')
@@ -595,7 +602,7 @@ plt.savefig('graph.pdf')`;
             for(let t of [k.vals, k.calcs]) {
                 for(let keyData in tables[keyT].data[t]) {
                     let search = `${keyT}.${keyData}`,
-                        sub = `tables['${keyT}'].data[${t}]['${keyData}'][parseInt(i)]`;
+                        sub = `tables['${keyT}'].data[${t}]['${keyData}'][i]`;
                     if(calcLoc.includes(search)) expressions.push(sub);
                     calcLoc = calcLoc.split(search).join(sub);
                 }
@@ -610,7 +617,7 @@ plt.savefig('graph.pdf')`;
                 i = ix + 1;
             }
             for(ix of ixs.reverse()) {
-                let sub = `tmp['${key}'][parseInt(i)]`;
+                let sub = `tmp['${key}'][i]`;
                 calcLoc = calcLoc.slice(0, ix) + sub + calcLoc.slice(ix + key.length);
                 expressions.push(sub);
             }
