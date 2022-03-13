@@ -15,6 +15,6 @@ function main() {
         let val = $(el).val().replace(',', '.');
         val = parseFloat(val);
         if(!val && val != 0) return;
-        $(el).val(val.toFixed(3));
+        $(el).val(val.toFixed(4));
     });
 }
