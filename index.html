@@ -1,17 +1,145 @@
 <html>
     <head>
-        <link rel="shortcut icon" type="image/x-icon" href="./img/main-ico.ico">
-        <meta charset="utf-8">
-        <title>Nabil Salama Projects</title>
-        <link rel="stylesheet" type="text/css" href="./style.css" />
-        <script src="./jquery.js"></script>
-        <script src="./script.js"></script>
+        <title>Pandemie-Simulation</title>
+        <meta charset="utf-8" />
+        <script src="api.js"></script>
+        <script src="script.js"></script>
+        <link rel="shortcut icon" type="image/x-icon" href="./icon.ico">
+        <!-- <link rel="stylesheet" href="darkmode.css" /> -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">        <link rel="stylesheet" type="text/css" href="style.css" />
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script>
-            $(init)
+            $(web.init);
         </script>
     </head>
     <body>
-        <h1>Projects by Nabil Salama</h1>
-        <div id="tiles"></div>
+        <div class="chart">
+            <h1>Simulation einer Pandemie</h1>
+            <div class="ctrl"><i class="fa fa-play" aria-hidden="true"></i><i class="fa fa-refresh" aria-hidden="true"></i></div>
+            <div id="chart_div" style="width: 100%; height: 100%;"></div>
+        </div>
+        <div class="more">
+            <div class="stats">
+                <div class="header"><h3>weitere Statistiken:</h3></div>
+                <div><p>Gesamtinfektionen:</p><span class="overallI"></span></div>
+                <div class="infectionRoot">
+                    <p>Infektionsursache:</p>
+                    <table>
+                        <tr>
+                            <td>Haushalt:</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>Öffentlichkeit:</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>Freunde:</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>Einreisende:</td>
+                            <td></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="furtherStats">
+                    <p>Tagesdetails:</p>
+                    <p id="legend">S=anfällig(susceptible)<br>I=infiziert<br>R=genesen/verstorben(removed)<br>Q=in quarantäne<br>C=Träger(nicht selbst infiziert)(carrying)</p>
+                    <table>
+                        <tr>
+                            <th>Tag</th>
+                            <th>S</th>
+                            <th>I</th>
+                            <th>R</th>
+                            <th>Q</th>
+                            <th>C</th>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="settings">
+                <div class="header"><h3>Einstellungen:</h3></div>
+                <div>
+                    <label for="population">Bevölkerung</label>
+                    <input type="range" id="population" name="population" min="1" max="100000" step="1" />
+                    <input type="number" id="populationVal" min="1" max="100000"/>
+                </div>
+                <div>
+                    <label for="startI">Anfangsinfektionen</label>
+                    <input type="range" id="startI" name="startI" min="1" max="100" step="1" />
+                    <input type="number" id="startIval" max="100" min="1"/>
+                </div>
+                <div class="probabilities">
+                    <p>Wahrscheinlichkeiten in %:</p>
+                    <table>
+                        <tr>
+                            <td>Anzustecken:</td>
+                            <td><input type="number" min="0" max="100"/></td>
+                        </tr>
+                        <tr>
+                            <td>Infektion:</td>
+                            <td><input type="number" min="0" max="100"/></td>
+                        </tr>
+                        <tr>
+                            <td>Tragen:</td>
+                            <td><input type="number" min="0" max="100"/></td>
+                        </tr>
+                        <tr>
+                            <td>Infektion entdecken:</td>
+                            <td><input type="number" min="0" max="100"/></td>
+                        </tr>
+                    </table>
+                </div>
+                <div id="avgInt">
+                    <p>Durchschnittliche Ansteckungen pro Person in:</p>                    
+                    <table>
+                        <tr>
+                            <td>Öffentlichkeit:</td>
+                            <td><input type="number" min="0"/></td>
+                        </tr>
+                        <tr>
+                            <td>Freunde:</td>
+                            <td><input type="number" min="0"/></td>
+                        </tr>
+                        <tr>
+                            <td>Haushalt:</td>
+                            <td><input type="number" min="0"/></td>
+                        </tr>
+                        <tr>
+                            <td>bei der Einreise:</td>
+                            <td><input type="number" min="0"/></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="measures">
+                    <p>Maßnahmen:</p>
+                    <table>
+                        <tr>
+                            <th>Tag</th>
+                            <th>Maßnahme</th>
+                            <th>Status</th>
+                            <th id="addMeasure"><i class="fa fa-plus" aria-hidden="true"></i></th>
+                        </tr>
+                        <tr>
+                            <td><input type="number" id="measureDay" min="1" value="8" /></td>
+                            <td><select id="measurement">
+                                <option value="lockdown">Lockdown</option>
+                                <option value="facemask">Maskenpflicht</option>
+                                <option value="socialDistance">Abstandsregelung</option>
+                                <option value="travelingProhibition">Reiseverbot</option>
+                            </select></td>
+                            <td><input type="checkbox" id="measureStatus" checked="checked"/></td>
+                            <td><img src="delete.jpg" /></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="ctrl"><i class="fa fa-play" aria-hidden="true"></i><i class="fa fa-refresh" aria-hidden="true"></i></div>
+            </div>
+        </div>
+        <div class="loading">
+            <p>berechne Tag <span></span><img src="loading.gif" /></p>
+        </div>
     </body>
 </html>
